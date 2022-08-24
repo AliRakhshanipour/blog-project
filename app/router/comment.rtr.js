@@ -10,7 +10,21 @@ router.post(
   addCommentToPost,
   CommentController.createComment
 );
-
+router.get(
+  "/get-comment/:id",
+  checkUserLogin,
+  CommentController.getCommentById
+);
+router.get(
+  "/get-user-comments",
+  checkUserLogin,
+  CommentController.getCommentsByUserId
+);
+router.delete(
+  "/delete-comment/:id",
+  checkUserLogin,
+  CommentController.deleteComment
+);
 module.exports = {
   commentRoutes: router,
 };
