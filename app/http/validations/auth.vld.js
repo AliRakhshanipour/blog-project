@@ -53,6 +53,20 @@ const authValidator = () => {
   ];
 };
 
+const loginValidator = () => {
+  return [
+    body("username").custom((username) => {
+      const regexUsername = /^[a-zA-Z]+[a-z0-9\_\.]{5,}$/gim;
+      if (!regexUsername.test(username))
+        throw { status: 401, message: "please enter a valid username" };
+      return true;
+    }),
+    body("password")
+      .isLength({ min: 6, max: 20 })
+      .withMessage("password must be between 6 and 20 characters"),
+  ];
+};
 module.exports = {
   authValidator,
+  loginValidator,
 };
