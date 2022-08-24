@@ -24,6 +24,7 @@ router.post(
 router.get("/get-posts", checkUserLogin, PostController.getPosts);
 router.get("/get-post/:id", checkUserLogin, PostController.getPostById);
 router.get("/getUserPost/:id", checkUserLogin, PostController.getUserPost);
+router.delete("/delete-post/:id", checkUserLogin, PostController.deletePost);
 module.exports = {
   postRoutes: router,
 };
