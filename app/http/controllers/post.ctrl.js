@@ -92,8 +92,29 @@ class PostController {
       next(error);
     }
   }
-  async editPost(req, res, next) {}
-  deletePost() {}
+  async editPost(req, res, next) {
+    try {
+      const { title, text } = req.body;
+      const owner = req.user._id;
+      const postId = req.params.id;
+      const post = await PostModel.findOne({ _id: postId, owner });
+      if (!post) throw { status: 400, message: "no post found with this id!!" };
+      const editPostResult = await PostModel.updateOne(
+        { _id: postId },
+        { $set: { title, text } }
+      );
+      if (editPostResult.modifiedCount == 0)
+        throw { status: 404, message: "post edition not successful!!" };
+      return res.status(200).json({
+        status: 200,
+        success: true,
+        message: "post edited successfully!!",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  async deletePost(req, res, next) {}
 }
 
 module.exports = {

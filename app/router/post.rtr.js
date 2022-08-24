@@ -14,6 +14,13 @@ router.post(
   PostController.createPost
 );
 router.post("/create-tag/:id", checkUserLogin, PostController.addTagToPost);
+router.post(
+  "/edit-post/:id",
+  checkUserLogin,
+  postValidator(),
+  expressValidatorErrorMapper,
+  PostController.editPost
+);
 router.get("/get-posts", checkUserLogin, PostController.getPosts);
 router.get("/get-post/:id", checkUserLogin, PostController.getPostById);
 router.get("/getUserPost/:id", checkUserLogin, PostController.getUserPost);
