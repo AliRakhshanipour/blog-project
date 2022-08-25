@@ -1,6 +1,7 @@
 const { genSaltSync, hashSync } = require("bcrypt");
 const { sign, verify } = require("jsonwebtoken");
-
+const path = require("path");
+const fs = require("fs");
 const hashStr = (str) => {
   const salt = genSaltSync(10);
   return hashSync(str, salt);
@@ -16,8 +17,28 @@ const checkTokenVerification = (token) => {
     throw { status: 404, message: "Please login to your account!!" };
   return result;
 };
+
+const createPathDirectory = () => {
+  let date = new Date();
+  let year = "" + date.getFullYear();
+  let month = date.getMonth() + "";
+  let day = "" + date.getDate();
+  const uploadPath = path.join(
+    __dirname,
+    "..",
+    "public",
+    "uploads",
+    year,
+    month,
+    day
+  );
+  fs.mkdirSync(uploadPath, { recursive: true });
+  return uploadPath;
+};
+createPathDirectory();
 module.exports = {
   hashStr,
   tokenGenerator,
   checkTokenVerification,
+  createPathDirectory,
 };
