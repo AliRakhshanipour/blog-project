@@ -180,6 +180,36 @@ class PostController {
       next(error);
     }
   }
+  async addImage(req, res, next) {
+    try {
+      const owner = req.user._id;
+      const postId = req.params.id;
+      if (Object.keys(req.files).length == 0)
+        throw {
+          status: 400,
+          message: "please select an image file",
+        };
+
+      files.forEach(async (file) => {
+        const filePath = file.path.split("public/")[1];
+
+        const result = await PostModel.updateOne(
+          { owner, _id: postId },
+          { $push: { images: filePath } }
+        );
+        if (result.modifiedCount == 0)
+          throw { status: 400, message: "image(s) did not upload!!" };
+      });
+
+      return res.status(200).json({
+        status: 200,
+        success: true,
+        message: "image(s) uploaded to the post successfully!!",
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 module.exports = {

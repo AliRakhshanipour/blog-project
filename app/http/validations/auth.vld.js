@@ -40,7 +40,7 @@ const authValidator = () => {
       .notEmpty()
       .withMessage("password can not be empty")
       .custom((password, cnx) => {
-        const passwordRegex = /^[a-z]+[a-zA-Z0-9\_\@\*\.]{5,}/;
+        const passwordRegex = /^[a-z]+[a-zA-Z0-9\_\@\*\.]{5,}$/;
         if (!passwordRegex.test(password))
           throw { status: 401, message: "Please enter a valid password..!!" };
         if (password != cnx.req?.body?.confirm_password)

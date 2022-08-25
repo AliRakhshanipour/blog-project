@@ -5,6 +5,7 @@ const { postValidator } = require("../http/validations/post.vld");
 const {
   expressValidatorErrorMapper,
 } = require("../http/middlewares/checkValidationErrors");
+const { upload_multer } = require("../../modules/file-uploaders");
 
 router.post(
   "/create",
@@ -21,6 +22,13 @@ router.post(
   expressValidatorErrorMapper,
   PostController.editPost
 );
+router.post(
+  "/upload-images/:id",
+  checkUserLogin,
+  upload_multer.array("images"),
+  PostController.addImage
+);
+
 router.get("/get-posts", checkUserLogin, PostController.getPosts);
 router.get("/get-post/:id", checkUserLogin, PostController.getPostById);
 router.get("/getUserPost/:id", checkUserLogin, PostController.getUserPost);
